@@ -14,17 +14,10 @@ public class MyArrayList<T> {
 
     public void add(T element) {
         if (size == elements.length) {
-            increaseCapacity();
+            increaseCapacity(size + 1);
         }
         elements[size] = element;
         size++;
-    }
-
-    private void increaseCapacity() {
-        int newSize = elements.length * 2;
-        Object[] newElements = new Object[newSize];
-        System.arraycopy(elements, 0, newElements, 0, elements.length);
-        elements = newElements;
     }
 
     public T get(int index) {
@@ -60,10 +53,14 @@ public class MyArrayList<T> {
     }
 
     public int indexOf(Object o) {
-        for (int i = 0; i < size; i++) {
-            if (o.equals(elements[i])) {
-                return i;
-            }
+        if (o == null) {
+            for (int i = 0; i < size; i++)
+                if (elements[i] == null)
+                    return i;
+        } else {
+            for (int i = 0; i < size; i++)
+                if (o.equals(elements[i]))
+                    return i;
         }
         return -1;
     }
@@ -97,10 +94,17 @@ public class MyArrayList<T> {
     private void increaseCapacity(int minCapacity) {
         int oldCapacity = elements.length;
         int newCapacity = oldCapacity + (oldCapacity >> 1);
-        if (newCapacity < minCapacity) {
+        if (newCapacity - minCapacity < 0)
             newCapacity = minCapacity;
-        }
+        if (newCapacity - Integer.MAX_VALUE > 0)
+            newCapacity = hugeCapacity(minCapacity);
         elements = Arrays.copyOf(elements, newCapacity);
+    }
+
+    private static int hugeCapacity(int minCapacity) {
+        if (minCapacity < 0) // overflow
+            throw new OutOfMemoryError();
+        return minCapacity;
     }
 
     public boolean removeAll(Collection<?> c) {
