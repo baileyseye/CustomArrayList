@@ -8,7 +8,7 @@ public class MyArrayList<T> {
     private int size;
 
     public MyArrayList() {
-        elements = new Object[10]; // начальный размер массива
+        elements = new Object[10];
         size = 0;
     }
 
@@ -24,7 +24,6 @@ public class MyArrayList<T> {
         if (index >= size || index < 0) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
         }
-        @SuppressWarnings("unchecked")
         T element = (T) elements[index];
         return element;
     }
@@ -37,7 +36,7 @@ public class MyArrayList<T> {
         if (numMoved > 0) {
             System.arraycopy(elements, index + 1, elements, index, numMoved);
         }
-        elements[--size] = null; // clear to let GC do its work
+        elements[--size] = null;
     }
 
     public int size() {
@@ -102,7 +101,7 @@ public class MyArrayList<T> {
     }
 
     private static int hugeCapacity(int minCapacity) {
-        if (minCapacity < 0) // overflow
+        if (minCapacity < 0)
             throw new OutOfMemoryError();
         return minCapacity;
     }
@@ -112,7 +111,7 @@ public class MyArrayList<T> {
         for (int i = 0; i < size; i++) {
             if (c.contains(elements[i])) {
                 remove(i);
-                i--; // После удаления элемента индексы сдвигаются, следовательно, уменьшаем i
+                i--;
                 modified = true;
             }
         }
