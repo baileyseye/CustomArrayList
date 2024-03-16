@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -158,6 +159,33 @@ class MyArrayListTest {
         addList.add("Element");
         assertTrue(list.addAll(addList));
         assertThrows(NullPointerException.class, () -> list.addAll(null));
+    }
+
+    @Test
+    void sortNaturalOrder() {
+        MyArrayList<Integer> list = new MyArrayList<>();
+        list.add(3);
+        list.add(1);
+        list.add(4);
+        list.add(2);
+        list.sort(Comparator.naturalOrder());
+        assertEquals("[1, 2, 3, 4]", Arrays.toString(list.toArray()));
+    }
+   @Test
+    void sortWithComparator() {
+        MyArrayList<String> list = new MyArrayList<>();
+        list.add("banana");
+        list.add("apple");
+        list.add("fig");
+        list.add("elderberry");
+        Comparator<String> lengthComparator = new Comparator<String>() {
+            @Override
+            public int compare(String s1, String s2) {
+                return Integer.compare(s1.length(), s2.length());
+            }
+        };
+        list.sort(lengthComparator);
+        assertEquals("[fig, apple, banana, elderberry]", Arrays.toString(list.toArray()));
     }
 
 }

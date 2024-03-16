@@ -2,6 +2,7 @@ package org.baileyseye.custom;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 
 public class MyArrayList<T> {
     private Object[] elements;
@@ -24,8 +25,7 @@ public class MyArrayList<T> {
         if (index >= size || index < 0) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
         }
-        T element = (T) elements[index];
-        return element;
+        return (T) elements[index];
     }
 
     public void remove(int index) {
@@ -116,5 +116,13 @@ public class MyArrayList<T> {
             }
         }
         return modified;
+    }
+
+    public void sort() {
+        Arrays.sort((T[]) elements, 0, size);
+    }
+
+    public void sort(Comparator<? super T> c) {
+        Arrays.sort((T[]) elements, 0, size, c);
     }
 }
