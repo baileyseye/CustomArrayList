@@ -18,17 +18,17 @@ public class MyArrayListExpectedTest {
     }
 
     @Test
-    void addTlements() {
+    void addElements() {
         MyArrayList<String> list = new MyArrayList<>();
-        list.add("Tlement1");
-        list.add("Tlement2");
-        list.add("Tlement3");
+        list.add("Element1");
+        list.add("Element2");
+        list.add("Element3");
         assertFalse(list.isEmpty());
         assertEquals(3, list.size());
     }
 
     @Test
-    void removeTlementsFromList() {
+    void removeElementsFromList() {
         MyArrayList<String> list = new MyArrayList<>();
         list.add("Element1");
         list.add("Element2");
@@ -74,7 +74,7 @@ public class MyArrayListExpectedTest {
     }
 
     @Test
-    void addAllTlementsFromCollection() {
+    void addAllElementsFromCollection() {
         MyArrayList<String> list = new MyArrayList<>();
         ArrayList<String> newElements = new ArrayList<>();
         newElements.add("Element1");
@@ -87,7 +87,7 @@ public class MyArrayListExpectedTest {
     }
 
     @Test
-    void removeAllTlementsFromCollection() {
+    void removeAllElementsFromCollection() {
         MyArrayList<String> list = new MyArrayList<>();
         list.add("Element1");
         list.add("Element2");
@@ -164,6 +164,5 @@ public class MyArrayListExpectedTest {
         assertEquals(1, list.size());
         assertEquals(Integer.valueOf(1), list.get(0));
     }
-
 
 }
