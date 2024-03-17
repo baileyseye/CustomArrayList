@@ -3,7 +3,7 @@ package org.baileyseye.custom;
 import java.util.Arrays;
 import java.util.Collection;
 
-public class MyArrayList<T> {
+public class MyArrayList<T> implements CustomList<T> {
     private Object[] elements;
     private int size;
 
@@ -12,37 +12,67 @@ public class MyArrayList<T> {
         size = 0;
     }
 
-    public void add(T element) {
-        if (size == elements.length) {
-            increaseCapacity(size + 1);
-        }
-        elements[size] = element;
-        size++;
-    }
-
+    @Override
     public T get(int index) {
         if (index >= size || index < 0) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
         }
-        T element = (T) elements[index];
-        return element;
+        return (T) elements[index];
     }
 
-    public void remove(int index) {
-        if (index >= size || index < 0) {
-            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+    @Override
+    public T set(int index, T element) {
+        T oldElement = get(index);
+        elements[index] = element;
+        return oldElement;
+    }
+
+    @Override
+    public void add(int index, T element) {
+        if (size == elements.length) {
+            increaseCapacity(size + 1);
         }
+        System.arraycopy(elements, index, elements, index + 1, size - index);
+        elements[index] = element;
+        size++;
+    }
+
+    @Override
+    public boolean add(T element) {
+        if (size == elements.length) {
+            increaseCapacity(size + 1);
+        }
+        elements[size++] = element;
+        return true;
+    }
+
+    @Override
+    public T remove(int index) {
+        T element = get(index);
         int numMoved = size - index - 1;
         if (numMoved > 0) {
             System.arraycopy(elements, index + 1, elements, index, numMoved);
         }
         elements[--size] = null;
+        return element;
     }
 
+    @Override
+    public boolean remove(Object o) {
+        for (int index = 0; index < size; index++) {
+            if (o.equals(elements[index])) {
+                remove(index);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
     public int size() {
         return size;
     }
-
+    @Override
     public boolean isEmpty() {
         return size == 0;
     }
@@ -117,4 +147,25 @@ public class MyArrayList<T> {
         }
         return modified;
     }
+
+    @Override
+    public CustomIterator<T> iterator() {
+        return new CustomArrayListIterator();
+    }
+
+
+    private class CustomArrayListIterator implements CustomIterator<T> {
+        private int currentIndex = 0;
+
+        @Override
+        public boolean hasNext() {
+            return currentIndex < size;
+        }
+
+        @Override
+        public T next() {
+            return (T) elements[currentIndex++];
+        }
+    }
+
 }
