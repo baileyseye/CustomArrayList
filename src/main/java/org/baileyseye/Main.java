@@ -1,11 +1,30 @@
 package org.baileyseye;
 
 import org.baileyseye.custom.MyArrayList;
+import org.baileyseye.custom.MyListIterator;
 
 public class Main {
     public static void main(String[] args) {
         MyArrayList<String> list = createSampleStringList();
+        iterations(list);
+        System.out.println("Итерации закончены. \n" +
+                "список :");
         printAllElements(list);
+
+    }
+
+    private static void iterations(MyArrayList<String> list) {
+        MyListIterator<String> iterator = list.myListIterator();
+
+        System.out.println("Прямой обход:");
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next());
+        }
+
+        System.out.println("Обратный обход:");
+        while (iterator.hasPrevious()) {
+            System.out.println(iterator.previous());
+        }
     }
 
     private static MyArrayList<String> createSampleStringList() {

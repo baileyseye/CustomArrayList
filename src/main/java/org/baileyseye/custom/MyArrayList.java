@@ -1,11 +1,9 @@
 package org.baileyseye.custom;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.Objects;
+import java.io.Serializable;
+import java.util.*;
 
-public class MyArrayList<E> implements CustomList<E> {
+public class MyArrayList<E> implements CustomList<E>, Serializable, Cloneable {
     private Object[] elements;
     private int size;
 
@@ -222,5 +220,75 @@ public class MyArrayList<E> implements CustomList<E> {
         result = 31 * result + Arrays.hashCode(elements);
         return result;
     }
+    @SuppressWarnings("unchecked")
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        MyArrayList<E> clonedList = (MyArrayList<E>)super.clone();
+        clonedList.elements = Arrays.copyOf(this.elements, this.size);
+        return clonedList;
+    }
 
-}
+    public MyListIterator<E> myListIterator() {
+        return new MyArrayListIterator();
+    }
+
+    private class MyArrayListIterator implements MyListIterator<E> {
+        private int currentIndex = 0;
+        private int lastReturned = -1;
+
+            @Override
+            public boolean hasNext() {
+                return currentIndex < size();
+            }
+
+            @Override
+            public E next() {
+                if (!hasNext()) throw new NoSuchElementException();
+                lastReturned = currentIndex;
+                return get(currentIndex++);
+            }
+
+            @Override
+            public boolean hasPrevious() {
+                return currentIndex > 0;
+            }
+
+            @Override
+            public E previous() {
+                if (!hasPrevious()) throw new NoSuchElementException();
+                lastReturned = --currentIndex;
+                return get(currentIndex);
+            }
+
+            @Override
+            public int nextIndex() {
+                return currentIndex;
+            }
+
+            @Override
+            public int previousIndex() {
+                return currentIndex - 1;
+            }
+
+            @Override
+            public void remove() {
+                if (lastReturned < 0) throw new IllegalStateException();
+                MyArrayList.this.remove(lastReturned);
+                currentIndex = lastReturned;
+                lastReturned = -1;
+            }
+
+            @Override
+            public void set(E e) {
+                if (lastReturned < 0) throw new IllegalStateException();
+                MyArrayList.this.set(lastReturned, e);
+            }
+
+            @Override
+            public void add(E e) {
+                MyArrayList.this.add(currentIndex++, e);
+                lastReturned = -1;
+            }
+        }
+    }
+
