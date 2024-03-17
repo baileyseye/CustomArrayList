@@ -2,8 +2,9 @@ package org.baileyseye.custom;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 
-public class MyArrayList<T> implements CustomList<T> {
+public class MyArrayList<E> implements CustomList<E> {
     private Object[] elements;
     private int size;
 
@@ -13,22 +14,22 @@ public class MyArrayList<T> implements CustomList<T> {
     }
 
     @Override
-    public T get(int index) {
+    public E get(int index) {
         if (index >= size || index < 0) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
         }
-        return (T) elements[index];
+        return (E) elements[index];
     }
 
     @Override
-    public T set(int index, T element) {
-        T oldElement = get(index);
+    public E set(int index, E element) {
+        E oldElement = get(index);
         elements[index] = element;
         return oldElement;
     }
 
     @Override
-    public void add(int index, T element) {
+    public void add(int index, E element) {
         if (size == elements.length) {
             increaseCapacity(size + 1);
         }
@@ -38,7 +39,7 @@ public class MyArrayList<T> implements CustomList<T> {
     }
 
     @Override
-    public boolean add(T element) {
+    public boolean add(E element) {
         if (size == elements.length) {
             increaseCapacity(size + 1);
         }
@@ -47,8 +48,8 @@ public class MyArrayList<T> implements CustomList<T> {
     }
 
     @Override
-    public T remove(int index) {
-        T element = get(index);
+    public E remove(int index) {
+        E element = get(index);
         int numMoved = size - index - 1;
         if (numMoved > 0) {
             System.arraycopy(elements, index + 1, elements, index, numMoved);
@@ -105,7 +106,7 @@ public class MyArrayList<T> implements CustomList<T> {
         return Arrays.copyOf(elements, size);
     }
 
-    public boolean addAll(Collection<? extends T> c) {
+    public boolean addAll(Collection<? extends E> c) {
         Object[] a = c.toArray();
         int numNew = a.length;
         ensureCapacity(size + numNew);
@@ -149,12 +150,12 @@ public class MyArrayList<T> implements CustomList<T> {
     }
 
     @Override
-    public CustomIterator<T> iterator() {
+    public CustomIterator<E> iterator() {
         return new CustomArrayListIterator();
     }
 
 
-    private class CustomArrayListIterator implements CustomIterator<T> {
+    private class CustomArrayListIterator implements CustomIterator<E> {
         private int currentIndex = 0;
 
         @Override
@@ -163,9 +164,38 @@ public class MyArrayList<T> implements CustomList<T> {
         }
 
         @Override
-        public T next() {
-            return (T) elements[currentIndex++];
+        public E next() {
+            return (E) elements[currentIndex++];
         }
+    }
+
+    public void sort(Comparator<? super E> c) {
+        quickSort(0, size - 1, c);
+    }
+
+    private void quickSort(int low, int high, Comparator<? super E> c) {
+        if (low < high) {
+            int pi = partition(low, high, c);
+            quickSort(low, pi - 1, c);
+            quickSort(pi + 1, high, c);
+        }
+    }
+
+    private int partition(int low, int high, Comparator<? super E> c) {
+        E pivot = (E) elements[high];
+        int i = (low - 1);
+        for (int j = low; j < high; j++) {
+            if (c.compare((E) elements[j], pivot) <= 0) {
+                i++;
+                E temp = (E) elements[i];
+                elements[i] = elements[j];
+                elements[j] = temp;
+            }
+        }
+        E temp = (E) elements[i + 1];
+        elements[i + 1] = elements[high];
+        elements[high] = temp;
+        return i + 1;
     }
 
 }

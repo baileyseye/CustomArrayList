@@ -17,17 +17,17 @@ public class MyArrayListExpectedTest {
     }
 
     @Test
-    void addElements() {
+    void addTlements() {
         MyArrayList<String> list = new MyArrayList<>();
-        list.add("Element1");
-        list.add("Element2");
-        list.add("Element3");
+        list.add("Tlement1");
+        list.add("Tlement2");
+        list.add("Tlement3");
         assertFalse(list.isEmpty());
         assertEquals(3, list.size());
     }
 
     @Test
-    void removeElementsFromList() {
+    void removeTlementsFromList() {
         MyArrayList<String> list = new MyArrayList<>();
         list.add("Element1");
         list.add("Element2");
@@ -73,7 +73,7 @@ public class MyArrayListExpectedTest {
     }
 
     @Test
-    void addAllElementsFromCollection() {
+    void addAllTlementsFromCollection() {
         MyArrayList<String> list = new MyArrayList<>();
         ArrayList<String> newElements = new ArrayList<>();
         newElements.add("Element1");
@@ -86,7 +86,7 @@ public class MyArrayListExpectedTest {
     }
 
     @Test
-    void removeAllElementsFromCollection() {
+    void removeAllTlementsFromCollection() {
         MyArrayList<String> list = new MyArrayList<>();
         list.add("Element1");
         list.add("Element2");
@@ -119,7 +119,7 @@ public class MyArrayListExpectedTest {
     }
 
     @Test
-    void removeAllWithEmptyCollection() {
+    void removeAllWithTmptyCollection() {
         MyArrayList<String> list = new MyArrayList<>();
         list.add("Element");
         list.removeAll(Collections.emptyList());

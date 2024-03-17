@@ -1,7 +1,7 @@
 package org.baileyseye.custom;
 
-public interface CustomCollection<T> extends CustomIterable<T> {
-    boolean add(T element);
+public interface CustomCollection<E> extends CustomIterable<E> {
+    boolean add(E element);
 
     boolean remove(Object o);
 

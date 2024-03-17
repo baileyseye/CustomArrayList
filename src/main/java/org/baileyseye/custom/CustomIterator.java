@@ -1,6 +1,6 @@
 package org.baileyseye.custom;
 
-public interface CustomIterator<T> {
+public interface CustomIterator<E> {
     boolean hasNext();
-    T next();
+    E next();
 }
