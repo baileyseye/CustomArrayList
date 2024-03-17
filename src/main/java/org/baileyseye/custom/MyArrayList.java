@@ -27,6 +27,7 @@ public class MyArrayList<E> implements CustomList<E> {
 
 
     @Override
+    @SuppressWarnings("unchecked")
     public E get(int index) {
         if (index >= size || index < 0) {
             throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
@@ -59,6 +60,9 @@ public class MyArrayList<E> implements CustomList<E> {
     }
 
     public boolean addAll(Collection<? extends E> c) {
+        if (c == null) {
+            throw new NullPointerException("Collection cannot be null");
+        }
         Object[] a = c.toArray();
         int numNew = a.length;
         increaseCapacity(size + numNew);
@@ -87,6 +91,20 @@ public class MyArrayList<E> implements CustomList<E> {
             }
         }
         return false;
+    }
+
+    public void removeAll(Collection<?> c) {
+        int writeIndex = 0;
+        for (int currentIndex = 0; currentIndex < size; currentIndex++) {
+            if (!c.contains(elements[currentIndex])) {
+                elements[writeIndex++] = elements[currentIndex];
+            }
+        }
+
+        for (int i = writeIndex; i < size; i++) {
+            elements[i] = null;
+        }
+        size = writeIndex;
     }
 
     @Override
@@ -139,26 +157,14 @@ public class MyArrayList<E> implements CustomList<E> {
         }
     }
 
-    public void removeAll(Collection<?> c) {
-        int writeIndex = 0;
-        for (int currentIndex = 0; currentIndex < size; currentIndex++) {
-            if (!c.contains(elements[currentIndex])) {
-                elements[writeIndex++] = elements[currentIndex];
-            }
-        }
 
-        for (int i = writeIndex; i < size; i++) {
-            elements[i] = null;
-        }
-        size = writeIndex;
-    }
 
     @Override
     public CustomIterator<E> iterator() {
         return new CustomArrayListIterator();
     }
 
-
+    @SuppressWarnings("unchecked")
     private class CustomArrayListIterator implements CustomIterator<E> {
         private int currentIndex = 0;
 
@@ -184,7 +190,7 @@ public class MyArrayList<E> implements CustomList<E> {
             quickSort(pi + 1, high, c);
         }
     }
-
+    @SuppressWarnings("unchecked")
     private int partition(int low, int high, Comparator<? super E> c) {
         E pivot = (E) elements[high];
         int i = (low - 1);
@@ -200,6 +206,21 @@ public class MyArrayList<E> implements CustomList<E> {
         elements[i + 1] = elements[high];
         elements[high] = temp;
         return i + 1;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MyArrayList<?> that = (MyArrayList<?>) o;
+        return size == that.size && Arrays.equals(elements, that.elements);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(size);
+        result = 31 * result + Arrays.hashCode(elements);
+        return result;
     }
 
 }

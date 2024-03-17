@@ -4,11 +4,11 @@ import org.baileyseye.custom.MyArrayList;
 
 public class Main {
     public static void main(String[] args) {
-        MyArrayList<String> list = getStringMyArrayList();
+        MyArrayList<String> list = createSampleStringList();
         printAllElements(list);
     }
 
-    private static MyArrayList<String> getStringMyArrayList() {
+    private static MyArrayList<String> createSampleStringList() {
         MyArrayList<String> list = new MyArrayList<>(20);
         list.add("Aston");
         list.add("Philyas");
