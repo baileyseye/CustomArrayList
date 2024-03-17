@@ -9,7 +9,7 @@ public class Main {
     }
 
     private static MyArrayList<String> getStringMyArrayList() {
-        MyArrayList<String> list = new MyArrayList<>();
+        MyArrayList<String> list = new MyArrayList<>(20);
         list.add("Aston");
         list.add("Philyas");
         list.add("Baileys");

@@ -10,9 +10,21 @@ public class MyArrayList<E> implements CustomList<E> {
     private int size;
 
     public MyArrayList() {
-        elements = new Object[10];
+        this(10);
+    }
+
+    public MyArrayList(int initialCapacity) {
+        if (initialCapacity > 0) {
+            elements = new Object[initialCapacity];
+        } else if (initialCapacity == 0) {
+            elements = new Object[]{};
+        } else {
+            throw new IllegalArgumentException("Illegal Capacity: " +
+                    initialCapacity);
+        }
         size = 0;
     }
+
 
     @Override
     public E get(int index) {
@@ -125,26 +137,24 @@ public class MyArrayList<E> implements CustomList<E> {
     private void increaseCapacity(int minCapacity) {
         int oldCapacity = elements.length;
         int newCapacity = oldCapacity + (oldCapacity >> 1);
-        if (newCapacity - minCapacity < 0)
+        if (newCapacity < minCapacity) {
             newCapacity = minCapacity;
-        if (newCapacity - Integer.MAX_VALUE > 0)
-            newCapacity = hugeCapacity(minCapacity);
+        }
         elements = Arrays.copyOf(elements, newCapacity);
     }
 
-    private static int hugeCapacity(int minCapacity) {
-        if (minCapacity < 0)
-            throw new OutOfMemoryError();
-        return minCapacity;
-    }
-
     public void removeAll(Collection<?> c) {
-        for (int i = 0; i < size; i++) {
-            if (c.contains(elements[i])) {
-                remove(i);
-                i--;
+        int writeIndex = 0;
+        for (int currentIndex = 0; currentIndex < size; currentIndex++) {
+            if (!c.contains(elements[currentIndex])) {
+                elements[writeIndex++] = elements[currentIndex];
             }
         }
+
+        for (int i = writeIndex; i < size; i++) {
+            elements[i] = null;
+        }
+        size = writeIndex;
     }
 
     @Override
