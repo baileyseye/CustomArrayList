@@ -120,7 +120,7 @@ public class MyArrayListExpectedTest {
     }
 
     @Test
-    void removeAllWithTmptyCollection() {
+    void removeAllWithEmptyCollection() {
         MyArrayList<String> list = new MyArrayList<>();
         list.add("Element");
         list.removeAll(Collections.emptyList());
