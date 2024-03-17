@@ -53,11 +53,18 @@ public class MyArrayList<E> implements CustomList<E> {
 
     @Override
     public boolean add(E element) {
-        if (size == elements.length) {
-            increaseCapacity(size + 1);
-        }
+        increaseCapacity(size + 1);
         elements[size++] = element;
         return true;
+    }
+
+    public boolean addAll(Collection<? extends E> c) {
+        Object[] a = c.toArray();
+        int numNew = a.length;
+        increaseCapacity(size + numNew);
+        System.arraycopy(a, 0, elements, size, numNew);
+        size += numNew;
+        return numNew != 0;
     }
 
     @Override
@@ -119,28 +126,17 @@ public class MyArrayList<E> implements CustomList<E> {
         return Arrays.copyOf(elements, size);
     }
 
-    public boolean addAll(Collection<? extends E> c) {
-        Object[] a = c.toArray();
-        int numNew = a.length;
-        ensureCapacity(size + numNew);
-        System.arraycopy(a, 0, elements, size, numNew);
-        size += numNew;
-        return numNew != 0;
-    }
 
-    private void ensureCapacity(int minCapacity) {
-        if (minCapacity > elements.length) {
-            increaseCapacity(minCapacity);
-        }
-    }
 
     private void increaseCapacity(int minCapacity) {
-        int oldCapacity = elements.length;
-        int newCapacity = oldCapacity + (oldCapacity >> 1);
-        if (newCapacity < minCapacity) {
-            newCapacity = minCapacity;
+        if (minCapacity > elements.length) {
+            int oldCapacity = elements.length;
+            int newCapacity = oldCapacity + (oldCapacity >> 1);
+            if (newCapacity < minCapacity) {
+                newCapacity = minCapacity;
+            }
+            elements = Arrays.copyOf(elements, newCapacity);
         }
-        elements = Arrays.copyOf(elements, newCapacity);
     }
 
     public void removeAll(Collection<?> c) {
