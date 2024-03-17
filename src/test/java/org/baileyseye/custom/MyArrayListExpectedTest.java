@@ -3,6 +3,7 @@ package org.baileyseye.custom;
 import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 
 import static org.junit.jupiter.api.Assertions.*;
 public class MyArrayListExpectedTest {
@@ -125,4 +126,44 @@ public class MyArrayListExpectedTest {
         list.removeAll(Collections.emptyList());
         assertEquals(1, list.size());
     }
+
+    @Test
+    void removeNonExistentElement() {
+        MyArrayList<String> list = new MyArrayList<>();
+        list.add("Element");
+        assertFalse(list.remove("NonExistent"));
+    }
+
+    @Test
+    void addAllWithNullCollection() {
+        MyArrayList<String> list = new MyArrayList<>();
+        assertThrows(NullPointerException.class, () -> list.addAll(null));
+    }
+
+    @Test
+    void getWithInvalidIndex() {
+        MyArrayList<String> list = new MyArrayList<>();
+        assertThrows(IndexOutOfBoundsException.class, () -> list.get(-1));
+        assertThrows(IndexOutOfBoundsException.class, () -> list.get(0));
+    }
+
+    @Test
+    void sortEmptyList() {
+        MyArrayList<Integer> list = new MyArrayList<>();
+        list.sort(Comparator.naturalOrder());
+
+        assertTrue(list.isEmpty());
+    }
+
+    @Test
+    void sortSingleElementList() {
+        MyArrayList<Integer> list = new MyArrayList<>();
+        list.add(1);
+        list.sort(Comparator.naturalOrder());
+
+        assertEquals(1, list.size());
+        assertEquals(Integer.valueOf(1), list.get(0));
+    }
+
+
 }

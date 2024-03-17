@@ -3,6 +3,7 @@ package org.baileyseye.custom;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
+import java.util.Objects;
 
 public class MyArrayList<E> implements CustomList<E> {
     private Object[] elements;
@@ -61,7 +62,7 @@ public class MyArrayList<E> implements CustomList<E> {
     @Override
     public boolean remove(Object o) {
         for (int index = 0; index < size; index++) {
-            if (o.equals(elements[index])) {
+            if (Objects.equals(o, elements[index])) {
                 remove(index);
                 return true;
             }
@@ -137,16 +138,13 @@ public class MyArrayList<E> implements CustomList<E> {
         return minCapacity;
     }
 
-    public boolean removeAll(Collection<?> c) {
-        boolean modified = false;
+    public void removeAll(Collection<?> c) {
         for (int i = 0; i < size; i++) {
             if (c.contains(elements[i])) {
                 remove(i);
                 i--;
-                modified = true;
             }
         }
-        return modified;
     }
 
     @Override

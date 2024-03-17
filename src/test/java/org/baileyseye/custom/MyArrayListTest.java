@@ -178,14 +178,53 @@ class MyArrayListTest {
         list.add("apple");
         list.add("fig");
         list.add("elderberry");
-        Comparator<String> lengthComparator = new Comparator<String>() {
-            @Override
-            public int compare(String s1, String s2) {
-                return Integer.compare(s1.length(), s2.length());
-            }
-        };
+        Comparator<String> lengthComparator = Comparator.comparingInt(String::length);
         list.sort(lengthComparator);
         assertEquals("[fig, apple, banana, elderberry]", Arrays.toString(list.toArray()));
     }
+
+    @Test
+    void setElement() {
+        MyArrayList<String> list = new MyArrayList<>();
+        list.add("Old");
+        String oldElement = list.set(0, "New");
+
+        assertEquals("Old", oldElement);
+        assertEquals("New", list.get(0));
+    }
+
+    @Test
+    void setElementOutOfBounds() {
+        MyArrayList<String> list = new MyArrayList<>();
+        assertThrows(IndexOutOfBoundsException.class, () -> list.set(0, "Element"));
+    }
+
+    @Test
+    void iteratorTest() {
+        MyArrayList<String> list = new MyArrayList<>();
+        list.add("First");
+        list.add("Second");
+        CustomIterator<String> it = list.iterator();
+
+        assertTrue(it.hasNext());
+        assertEquals("First", it.next());
+        assertTrue(it.hasNext());
+        assertEquals("Second", it.next());
+        assertFalse(it.hasNext());
+    }
+
+    @Test
+    void addElementInTheMiddle() {
+        MyArrayList<String> list = new MyArrayList<>();
+        list.add("First");
+        list.add("Third");
+        list.add(1, "Second");
+
+        assertEquals(3, list.size());
+        assertEquals("Second", list.get(1));
+        assertEquals("Third", list.get(2));
+    }
+
+
 
 }
